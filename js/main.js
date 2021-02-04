@@ -1,20 +1,18 @@
 const getRandomValue = function (minValue, maxValue) {
   if (minValue >= 0 && maxValue > minValue) {
-    let randomNumber = Math.round(Math.random() * (maxValue - minValue) + minValue);
-    return randomNumber;
+    return Math.round(Math.random() * (maxValue - minValue) + minValue);
   }
-  return 'Нужно ввести корректные значения minValue и maxValue';
+  throw new Error (-1);
 }
 
 const getRandomCoordinate = function (minValue, maxValue, dots) {
-  if (minValue >= 0 && maxValue > minValue) {
-    let ramdomCoordinate = (Math.random() * (maxValue - minValue) + minValue).toFixed(dots);
-    return ramdomCoordinate;
+  let fixedMinNumber = minValue.toFixed(dots);
+  let fixedMaxNumber = maxValue.toFixed(dots);
+  if (fixedMinNumber >= 0 && fixedMaxNumber > fixedMinNumber) {
+    return (Math.random()* (fixedMaxNumber - fixedMinNumber) + minValue).toFixed(dots);
   }
-  return 'Нужно ввести корректные значения minValue и maxValue';
+  throw new Error (-1);
 }
 
-getRandomCoordinate(3,5,2);
+getRandomCoordinate(1.1, 1.2, 1);
 getRandomValue(3, 6);
-
-// Источник идеи: https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
