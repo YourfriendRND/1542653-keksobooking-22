@@ -1,9 +1,8 @@
-// Global variables
-let typeOfAppartment = ['palace', 'flat', 'house', 'bungalow'];
-let timeCheckinCheckout = ['12:00', '13:00', '14:00'];
-let facilities = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-let sourcesOfPhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-let quantity = 10;
+// constants
+const TYPES_OF_APARTMENT = ['palace', 'flat', 'house', 'bungalow'];
+const CHECKOUT_TIMES = ['12:00', '13:00', '14:00'];
+const FACILITIES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const SOURCES_OF_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 // Utility functions
 const getRandomValue = function (minValue, maxValue) {
@@ -22,42 +21,49 @@ const getRandomCoordinate = function (minValue, maxValue, dots) {
   throw new Error (-1);
 }
 
-const getRandomData = function (data) {
-  return data[getRandomValue(0, data.length - 1)];
+const getRandomElementOfArray = function (array) {
+  return array[getRandomValue(0, array.length - 1)];
 }
 
-const getRandomDataset = function (dataset) {
-  let randomDataset = new Array();
-  for (let i = 0; i < dataset.length; i++) {
-    let newData = getRandomData(dataset);
-    if (randomDataset.indexOf(newData) == -1) {
-      randomDataset.push(newData);
-    }
+const getRandomArray = function (array) {
+  const randomArray = [];
+  const k = getRandomValue(1, array.length);
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let tempValue = array[j];
+    array[j] = array[i];
+    array[i] = tempValue;
   }
-  return randomDataset;
+
+  for (let i = 0; i < k; i++) {
+    randomArray[i] = array[i];
+  }
+
+  return randomArray;
 }
 
 // create Announcements
 
-const createListRandomAnnouncement = function (quantity) {
-  let listRandomAnnouncements = new Array()
-  for (let i = 1; i <= quantity; i++) {
-    let announce = new Object();
-    let coordinateX = getRandomCoordinate(35.65, 35.7, 5);
-    let coordinateY = getRandomCoordinate(139.7, 139.8, 5);
+const createListRandomAnnouncement = function () {
+  const listRandomAnnouncements = [];
+  const quantity = 10;
+  for (let i = 0; i < quantity; i++) {
+    const announce = {};
+    const coordinateX = getRandomCoordinate(35.65000, 35.70000, 5);
+    const coordinateY = getRandomCoordinate(139.70000, 139.80000, 5);
     announce.author = {avatar: 'img/avatars/user0' + getRandomValue(1, 8) + '.png'};
     announce.offer = {
       title: 'Сдается жилье на длительный срок',
       address: coordinateX + ', ' + coordinateY,
       price: getRandomValue(2500, 15000),
-      type: getRandomData(typeOfAppartment),
+      type: getRandomElementOfArray(TYPES_OF_APARTMENT),
       rooms: getRandomValue(1, 8),
       guests: getRandomValue(1, 16),
-      checkin: getRandomData(timeCheckinCheckout),
-      checkout: getRandomData(timeCheckinCheckout),
-      features: getRandomDataset(facilities),
+      checkin: getRandomElementOfArray(CHECKOUT_TIMES),
+      checkout: getRandomElementOfArray(CHECKOUT_TIMES),
+      features: getRandomArray(FACILITIES),
       description: 'Сдаю помещение на длительный срок добросовестным жильцам без вредных привычек. Жилое помещение в отличном состоянии, уютное, тёплое и с отличным видом на город',
-      photos: getRandomDataset(sourcesOfPhotos),
+      photos: getRandomArray(SOURCES_OF_PHOTOS),
     };
     announce.location = {
       x: coordinateX,
@@ -68,4 +74,4 @@ const createListRandomAnnouncement = function (quantity) {
   return listRandomAnnouncements;
 }
 
-createListRandomAnnouncement(quantity);
+createListRandomAnnouncement();
