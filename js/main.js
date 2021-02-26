@@ -1,2 +1,3 @@
-import {createListRandomAnnouncement} from './data.js';
-createListRandomAnnouncement();
+import {addAnnouncementOnPage} from './create-ad.js';
+
+addAnnouncementOnPage();
