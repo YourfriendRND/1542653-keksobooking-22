@@ -1,25 +1,24 @@
-import {createListRandomAnnouncement} from './data.js';
 import {TYPES_OF_APARTMENT, USED_ON_PAGE_TYPES_OF_APARTMENT} from './const.js';
 
 const mapBlock = document.querySelector('.map__canvas');
 const similarAnnouncementTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const addAvatarOnPage = function (selector, avatar) {
-  if (avatar === undefined) {
+  if (!avatar) {
     selector.classList.add('hidden');
   }
   selector.src = avatar;
 }
 
 const addTextContentOnPage = function (selector, content) {
-  if (content === undefined) {
+  if (!content) {
     selector.classList.add('hidden');
   }
   selector.textContent = content;
 }
 
 const addPriceOnPage = function(selector, price) {
-  if (price === undefined) {
+  if (!price) {
     selector.classList.add('hidden');
   }
   selector.textContent = price + ' ₽/ночь';
@@ -37,23 +36,27 @@ const addTypeOfHousingOnPage = function(selector, arrayOfTypes) {
   selector.textContent = arrayOfTypes;
 }
 
-const addQuantityOfGuests = function (selector, quantityOfRooms, quantittyOfGuests) {
-  if (quantittyOfGuests === undefined || quantityOfRooms === undefined) {
-    selector.classList.add('hidden');
-  }
+const getCorrectRoomWord = function (quantityOfRooms) {
   if (quantityOfRooms === 1) {
-    selector.textContent = quantityOfRooms + ' комната для ' + quantittyOfGuests + ' гостей';
+    return ' комната для ';
   }
   else if (quantityOfRooms >= 5) {
-    selector.textContent = quantityOfRooms + ' комнат для ' + quantittyOfGuests + ' гостей';
+    return ' комнат для ';
   }
   else {
-    selector.textContent = quantityOfRooms + ' комнаты для ' + quantittyOfGuests + ' гостей';
+    return ' комнаты для ';
   }
 }
 
+const addQuantityOfGuests = function (selector, quantityOfRooms, quantittyOfGuests) {
+  if (!quantittyOfGuests || !quantityOfRooms) {
+    selector.classList.add('hidden');
+  }
+  selector.textContent = quantityOfRooms + getCorrectRoomWord(quantityOfRooms) + quantittyOfGuests + ' гостей';
+}
+
 const addTimeOnPage = function (selector, checkinTime, checkoutTime) {
-  if (checkinTime === undefined || checkoutTime === undefined) {
+  if (!checkinTime || !checkoutTime) {
     selector.classList.add('hidden');
   }
   selector.textContent = 'Заезд после ' + checkinTime + ', выезд до ' + checkoutTime;
@@ -88,9 +91,7 @@ const addPhotosOfHousing = function(selector, arrayOfPhotos) {
   }
 }
 
-const announcementList = createListRandomAnnouncement();
-
-const addAnnouncementOnPage = function () {
+const addAnnouncementOnPage = function (announcement) {
   const similarAnnouncement = similarAnnouncementTemplate.cloneNode(true);
   const avatarOfUser = similarAnnouncement.querySelector('.popup__avatar');
   const titleOfAnnouncement = similarAnnouncement.querySelector('.popup__title');
@@ -103,16 +104,16 @@ const addAnnouncementOnPage = function () {
   const descriptionText = similarAnnouncement.querySelector('.popup__description')
   const photoOfHousing = similarAnnouncement.querySelector('.popup__photo');
 
-  addAvatarOnPage(avatarOfUser, announcementList[0].author.avatar);
-  addTextContentOnPage(titleOfAnnouncement,  announcementList[0].offer.title);
-  addTextContentOnPage(addressOfHousing,  announcementList[0].offer.address);
-  addPriceOnPage(priceOfHousing,  announcementList[0].offer.price);
-  addTypeOfHousingOnPage(typeOfHousing,  announcementList[0].offer.type);
-  addQuantityOfGuests(capacityOfHousing,  announcementList[0].offer.rooms,  announcementList[0].offer.guests);
-  addTimeOnPage(time,  announcementList[0].offer.checkin,  announcementList[0].offer.checkout);
-  addFeaturesInAnnouncement(featuresList,  announcementList[0].offer.features);
-  addTextContentOnPage(descriptionText,  announcementList[0].offer.description);
-  addPhotosOfHousing(photoOfHousing,  announcementList[0].offer.photos);
+  addAvatarOnPage(avatarOfUser, announcement.author.avatar);
+  addTextContentOnPage(titleOfAnnouncement,  announcement.offer.title);
+  addTextContentOnPage(addressOfHousing,  announcement.offer.address);
+  addPriceOnPage(priceOfHousing,  announcement.offer.price);
+  addTypeOfHousingOnPage(typeOfHousing,  announcement.offer.type);
+  addQuantityOfGuests(capacityOfHousing,  announcement.offer.rooms,  announcement.offer.guests);
+  addTimeOnPage(time,  announcement.offer.checkin,  announcement.offer.checkout);
+  addFeaturesInAnnouncement(featuresList,  announcement.offer.features);
+  addTextContentOnPage(descriptionText,  announcement.offer.description);
+  addPhotosOfHousing(photoOfHousing,  announcement.offer.photos);
   mapBlock.appendChild(similarAnnouncement);
 }
 

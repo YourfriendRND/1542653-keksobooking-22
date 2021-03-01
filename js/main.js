@@ -1,3 +1,5 @@
+import {createListRandomAnnouncement} from './data.js';
 import {addAnnouncementOnPage} from './create-ad.js';
 
-addAnnouncementOnPage();
+const announcement = createListRandomAnnouncement();
+addAnnouncementOnPage(announcement[0]);
