@@ -1,6 +1,6 @@
 // constants
-const TYPES_OF_APARTMENT = ['palace', 'flat', 'house', 'bungalow'];
-const USED_ON_PAGE_TYPES_OF_APARTMENT = ['Дворец', 'Квартира', 'Дом', 'Бунгало'];
+const TYPES_OF_APARTMENT = ['palace', 'house', 'flat', 'bungalow'];
+const USED_ON_PAGE_TYPES_OF_APARTMENT = ['Дворец', 'Дом', 'Квартира', 'Бунгало'];
 const CHECKOUT_TIMES = ['12:00', '13:00', '14:00'];
 const FACILITIES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const SOURCES_OF_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
