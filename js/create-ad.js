@@ -1,6 +1,5 @@
 import {TYPES_OF_APARTMENT, USED_ON_PAGE_TYPES_OF_APARTMENT} from './const.js';
 
-const mapBlock = document.querySelector('.map__canvas');
 const similarAnnouncementTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const addAvatarOnPage = function (selector, avatar) {
@@ -25,7 +24,7 @@ const addPriceOnPage = function(selector, price) {
 }
 
 const addTypeOfHousingOnPage = function(selector, arrayOfTypes) {
-  if (arrayOfTypes.length === 0) {
+  if (!arrayOfTypes.length) {
     selector.classList.add('hidden');
   }
   for (let i = 0; i < TYPES_OF_APARTMENT.length; i++) {
@@ -40,12 +39,10 @@ const getCorrectRoomWord = function (quantityOfRooms) {
   if (quantityOfRooms === 1) {
     return ' комната для ';
   }
-  else if (quantityOfRooms >= 5) {
+  if (quantityOfRooms >= 5) {
     return ' комнат для ';
   }
-  else {
-    return ' комнаты для ';
-  }
+  return ' комнаты для ';
 }
 
 const addQuantityOfGuests = function (selector, quantityOfRooms, quantittyOfGuests) {
@@ -63,7 +60,7 @@ const addTimeOnPage = function (selector, checkinTime, checkoutTime) {
 }
 
 const addFeaturesInAnnouncement = function (parentSelector, arrayOfFeatures) {
-  if (arrayOfFeatures.length === 0) {
+  if (!arrayOfFeatures.length) {
     parentSelector.classList.add('hidden');
   }
   for (let i = parentSelector.children.length - 1; i >=0; i--) {
@@ -78,7 +75,7 @@ const addFeaturesInAnnouncement = function (parentSelector, arrayOfFeatures) {
 }
 
 const addPhotosOfHousing = function(selector, arrayOfPhotos) {
-  if (arrayOfPhotos.length === 0) {
+  if (!arrayOfPhotos.length) {
     selector.classList.add('hidden');
   }
   let copySelector = selector.cloneNode(true);
@@ -114,7 +111,7 @@ const addAnnouncementOnPage = function (announcement) {
   addFeaturesInAnnouncement(featuresList,  announcement.offer.features);
   addTextContentOnPage(descriptionText,  announcement.offer.description);
   addPhotosOfHousing(photoOfHousing,  announcement.offer.photos);
-  mapBlock.appendChild(similarAnnouncement);
+  return similarAnnouncement
 }
 
 export {addAnnouncementOnPage};
