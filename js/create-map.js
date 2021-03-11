@@ -1,9 +1,10 @@
 import {pageCondition} from './page-condition.js';
-import {TOKYO_CENTER_COORDINATES} from './const.js';
+import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SIZES_OF_PIN, SIZES_OF_PIN_CENTER} from './const.js';
 import {createListRandomAnnouncement} from './data.js';
 import {addAnnouncementOnPage} from './create-ad.js';
 
 const leafletMap = L.map('map-canvas');
+/* global L:readonly */
 
 pageCondition.setPageNonActive();
 
@@ -17,9 +18,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(leafletMap);
 
 const mainPinIcon =  L.icon({
-  iconUrl: 'img/main-pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: PICTURE_OF_MAIN_PIN,
+  iconSize: SIZES_OF_PIN,
+  iconAnchor: SIZES_OF_PIN_CENTER,
 })
 
 const mainPin = L.marker(
@@ -38,19 +39,19 @@ mainPin.on('move', function(evt) {
 })
 
 const iconOfOtherPins = L.icon({
-  iconUrl: 'img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: PICTURE_OF_EXTRA_PINS,
+  iconSize: SIZES_OF_PIN,
+  iconAnchor: SIZES_OF_PIN_CENTER,
 })
 
 const announcement = createListRandomAnnouncement();
 
 announcement.forEach(function({location}, index) {
-  let coordinates = {
+  const coordinates = {
     lat: location.x,
     lng: location.y,
   }
-  let popupContent = addAnnouncementOnPage(announcement[index])
+  const popupContent = addAnnouncementOnPage(announcement[index])
   const otherPins = L.marker(
     coordinates,
     {
