@@ -1,6 +1,6 @@
 import {pageCondition} from './page-condition.js';
 import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SIZES_OF_PIN, SIZES_OF_PIN_CENTER} from './const.js';
-import {createListRandomAnnouncement} from './data.js';
+//import {createListRandomAnnouncement} from './data.js';
 import {addAnnouncementOnPage} from './create-ad.js';
 
 const leafletMap = L.map('map-canvas');
@@ -44,8 +44,29 @@ const iconOfOtherPins = L.icon({
   iconAnchor: SIZES_OF_PIN_CENTER,
 })
 
-const announcement = createListRandomAnnouncement();
+//const announcement = createListRandomAnnouncement();
 
+const createAdOnMap = function (array) {
+  array.forEach(function({location}, index) {
+    const coordinates = {
+      lat: location.x,
+      lng: location.y,
+    }
+    const popupContent = addAnnouncementOnPage(array[index])
+    const otherPins = L.marker(
+      coordinates,
+      {
+        icon: iconOfOtherPins,
+      },
+    )
+    otherPins.addTo(leafletMap);
+    otherPins.bindPopup(
+      popupContent,
+    )
+  })
+}
+
+/*
 announcement.forEach(function({location}, index) {
   const coordinates = {
     lat: location.x,
@@ -63,3 +84,4 @@ announcement.forEach(function({location}, index) {
     popupContent,
   )
 })
+*/
