@@ -1,12 +1,43 @@
 import {pageCondition} from './page-condition.js';
-import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SIZES_OF_PIN, SIZES_OF_PIN_CENTER} from './const.js';
+import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SIZES_OF_PIN, SIZES_OF_PIN_CENTER, SERVER_URL} from './const.js';
 //import {createListRandomAnnouncement} from './data.js';
 import {addAnnouncementOnPage} from './create-ad.js';
+import {getData} from './api.js';
 
-const leafletMap = L.map('map-canvas');
 /* global L:readonly */
 
+const leafletMap = L.map('map-canvas');
+
+const iconOfOtherPins = L.icon({
+  iconUrl: PICTURE_OF_EXTRA_PINS,
+  iconSize: SIZES_OF_PIN,
+  iconAnchor: SIZES_OF_PIN_CENTER,
+})
+
+const createAdOnMap = function (array) {
+  array.forEach(function({location}, index) {
+    const coordinates = {
+      Lat: location.x,
+      Lng: location.y,
+    }
+    const popupContent = addAnnouncementOnPage(array[index])
+    const otherPins = L.marker(
+      coordinates,
+      {
+        icon: iconOfOtherPins,
+      },
+    )
+    otherPins.addTo(leafletMap);
+    otherPins.bindPopup(
+      popupContent,
+    )
+  })
+}
+
 pageCondition.setPageNonActive();
+
+getData(SERVER_URL, createAdOnMap)
+
 
 leafletMap.on('load', function() {
   pageCondition.setPageActive();
@@ -38,33 +69,9 @@ mainPin.on('move', function(evt) {
   addressOfNewAnnouncement.value = newLatitude + ', ' + newLongitude;
 })
 
-const iconOfOtherPins = L.icon({
-  iconUrl: PICTURE_OF_EXTRA_PINS,
-  iconSize: SIZES_OF_PIN,
-  iconAnchor: SIZES_OF_PIN_CENTER,
-})
 
 //const announcement = createListRandomAnnouncement();
 
-const createAdOnMap = function (array) {
-  array.forEach(function({location}, index) {
-    const coordinates = {
-      lat: location.x,
-      lng: location.y,
-    }
-    const popupContent = addAnnouncementOnPage(array[index])
-    const otherPins = L.marker(
-      coordinates,
-      {
-        icon: iconOfOtherPins,
-      },
-    )
-    otherPins.addTo(leafletMap);
-    otherPins.bindPopup(
-      popupContent,
-    )
-  })
-}
 
 /*
 announcement.forEach(function({location}, index) {
