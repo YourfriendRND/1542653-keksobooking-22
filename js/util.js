@@ -36,4 +36,36 @@ const getRandomArray = function (array) {
   return randomArray;
 }
 
-export {getRandomValue, getRandomCoordinate, getRandomElementOfArray, getRandomArray};
+const showDownloadError   = function() {
+  const mistakeBlock = document.createElement('div');
+  const closeButton = document.createElement('span');
+  mistakeBlock.style.width = '100%';
+  mistakeBlock.style.height = '20px';
+  mistakeBlock.style.position = 'absolute';
+  mistakeBlock.style.top = 0;
+  mistakeBlock.style.left = 0;
+  mistakeBlock.style.backgroundColor = 'yellow';
+  mistakeBlock.style.textAlign = 'center'
+  mistakeBlock.textContent = 'Не удалось загрузить данные о размещенных объявлениях на карте, пожалуйста, попробуйте позже'
+  closeButton.style.width = '20px'
+  closeButton.style.height = '20px'
+  closeButton.style.backgroundImage = 'url(img/cross.svg)'
+  closeButton.style.position = 'absolute';
+  closeButton.style.top = '5px';
+  closeButton.style.right = 0;
+  closeButton.style.cursor = 'pointer'
+  mistakeBlock.append(closeButton);
+  document.body.append(mistakeBlock);
+
+  setTimeout(function() {
+    if(document.body.contains(mistakeBlock)) {
+      mistakeBlock.remove();
+    }
+  }, 5000)
+
+  closeButton.addEventListener('click', function() {
+    mistakeBlock.remove();
+  })
+}
+
+export {getRandomValue, getRandomCoordinate, getRandomElementOfArray, getRandomArray, showDownloadError};
