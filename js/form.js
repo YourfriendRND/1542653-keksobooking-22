@@ -1,4 +1,6 @@
-import {TYPES_OF_APARTMENT, MIN_PRICES, TOKYO_CENTER_COORDINATES, SELECT_OF_TWO_ROOMS_ON_PAGE, SELECT_OF_THREE_ROOMS_ON_PAGE, SELECT_OF_MAX_ROOMS_ON_PAGE} from './const.js';
+import {TYPES_OF_APARTMENT, MIN_PRICES, TOKYO_CENTER_COORDINATES, SELECT_OF_TWO_ROOMS_ON_PAGE, SELECT_OF_THREE_ROOMS_ON_PAGE, SELECT_OF_MAX_ROOMS_ON_PAGE, SERVER_URL_FOR_POST} from './const.js';
+import {sendData} from './api.js';
+import {pin} from './create-map.js'
 
 const options = TYPES_OF_APARTMENT.reverse();
 const fieldSelectionOfHousing = document.querySelector('#type');
@@ -10,8 +12,11 @@ const fieldRoomsNumber = document.querySelector('#room_number');
 const fieldGuestsNumber = document.querySelector('#capacity');
 const optionsOfRoomsNumber = fieldRoomsNumber.querySelectorAll('option');
 const optionsOfGuestsNumber = fieldGuestsNumber.querySelectorAll('option');
-
-
+const form = document.querySelector('.ad-form');
+const successBlock = document.querySelector('#success').content.querySelector('.success');
+const errorBlock = document.querySelector('#error').content.querySelector('.error');
+const mainContent = document.querySelector('main');
+const resetButton = document.querySelector('.ad-form__reset');
 
 fieldTitle.addEventListener('input', function() {
   const message = (this.value.search(/\d/) != -1) ? ('Поле заполнено некорректно, удалите цифры из поля ввода') : ('');
@@ -72,4 +77,42 @@ fieldRoomsNumber.addEventListener('change', function() {
       optionsOfGuestsNumber[i].setAttribute('disabled', true);
     }
   }
+})
+
+const showSuccessMessage = function() {
+  mainContent.append(successBlock);
+  form.reset();
+  pin.refreshMainPin();
+}
+
+document.addEventListener('keydown', function(evt) {
+  if(evt.key === ('Escape' || 'Esc') && mainContent.contains(successBlock) || mainContent.contains(errorBlock)) {
+    evt.preventDefault();
+    successBlock.remove();
+    errorBlock.remove()
+  }
+})
+
+document.addEventListener('click', function(evt) {
+  if(mainContent.contains(successBlock) || mainContent.contains(errorBlock)) {
+    evt.preventDefault();
+    successBlock.remove();
+    errorBlock.remove()
+  }
+})
+
+const error = function() {
+  mainContent.append(errorBlock);
+}
+
+form.addEventListener('submit', function(evt) {
+  evt.preventDefault();
+  const formData = new FormData(evt.target)
+  sendData(SERVER_URL_FOR_POST, showSuccessMessage, error, formData)
+})
+
+resetButton.addEventListener('click', function(evt) {
+  evt.preventDefault();
+  form.reset();
+  pin.refreshMainPin();
 })

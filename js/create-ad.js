@@ -111,7 +111,7 @@ const addAnnouncementOnPage = function (announcement) {
   addFeaturesInAnnouncement(featuresList,  announcement.offer.features);
   addTextContentOnPage(descriptionText,  announcement.offer.description);
   addPhotosOfHousing(photoOfHousing,  announcement.offer.photos);
-  return similarAnnouncement
+  return similarAnnouncement;
 }
 
 export {addAnnouncementOnPage};

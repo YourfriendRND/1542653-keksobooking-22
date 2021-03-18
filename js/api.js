@@ -1,17 +1,42 @@
-const getData = function (url, onSuccess) {
-  return fetch(url,
+const getData = function(url, onSuccess, onError) {
+  fetch(url)
+    .then(
+      function(response) {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error('Не удалось загрузить данные о похожих объявлениях, попробуйте позже')
+      },
+    ).then(
+      function(json) {
+        onSuccess(json)
+      },
+    ).catch(
+      function() {
+        onError()
+      },
+    )
+}
+
+const sendData = function(url, onSuccess, onError, body) {
+  fetch(
+    url,
     {
-      method: 'GET',
-      credentials: 'same-origin',
-    })
-    .then(function (response) {
+      method: 'POST',
+      body,
+    },
+  )
+    .then(function(response) {
       if (response.ok) {
-        return response.json();
+        onSuccess()
       }
-      throw new Error ('Не удалось получить список объявлений. Попробуйте выполнить запрос позже')
-    }).then(function(json) {
-      onSuccess(json)
+      else {
+        onError()
+      }
+    })
+    .catch(function(){
+      onError()
     })
 }
 
-export {getData};
+export {getData, sendData};
