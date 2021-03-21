@@ -1,9 +1,9 @@
 import {pageCondition} from './page-condition.js';
-import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SIZES_OF_PIN, SIZES_OF_PIN_CENTER, SERVER_URL_FOR_GET} from './const.js';
+import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SIZES_OF_PIN, SIZES_OF_PIN_CENTER, SERVER_URL_FOR_GET, QUANTITY_OF_RANDOM_ANNOUNCEMENT} from './const.js';
 import {addAnnouncementOnPage} from './create-ad.js';
 import {getData} from './api.js';
-import {showDownloadError} from './util.js';
-
+import {showDownloadError, getRandomArray} from './util.js';
+import {changeHousingType} from './filter.js';
 /* global L:readonly */
 
 const leafletMap = L.map('map-canvas');
@@ -14,24 +14,47 @@ const iconOfOtherPins = L.icon({
   iconAnchor: SIZES_OF_PIN_CENTER,
 })
 
-const createAdOnMap = function (array) {
-  array.forEach(function({location}, index) {
-    const coordinates = {
-      lat: location.lat,
-      lng: location.lng,
-    }
-    const popupContent = addAnnouncementOnPage(array[index])
-    const otherPins = L.marker(
-      coordinates,
-      {
-        icon: iconOfOtherPins,
-      },
-    )
-    otherPins.addTo(leafletMap);
-    otherPins.bindPopup(
-      popupContent,
-    )
-  })
+const extraMarker = {
+  allMarkers: [],
+  createMarkers: function(array) {
+    array.forEach(function({location}, index) {
+      const coordinates = {
+        lat: location.lat,
+        lng: location.lng,
+      }
+      const otherPins = L.marker(
+        coordinates,
+        {
+          icon: iconOfOtherPins,
+        },
+      )
+      const popupContent = addAnnouncementOnPage(array[index])
+      otherPins.bindPopup(
+        popupContent,
+      )
+      extraMarker.allMarkers.push(otherPins)
+    })
+    return extraMarker.allMarkers;
+  },
+  paintMarkers: function() {
+    extraMarker.allMarkers.forEach(function(element) {
+      element.addTo(leafletMap)
+    })
+  },
+  deleteMarkers: function() {
+    extraMarker.allMarkers.forEach(function(element) {
+      element.remove()
+    })
+    extraMarker.allMarkers = [];
+  },
+}
+
+const createAdOnMap = function(array) {
+  const shuffledArray = getRandomArray(array);
+  const slicedArray = shuffledArray.slice(0, QUANTITY_OF_RANDOM_ANNOUNCEMENT);
+  extraMarker.createMarkers(slicedArray)
+  extraMarker.paintMarkers()
+  changeHousingType(slicedArray);
 }
 
 pageCondition.setPageNonActive();
@@ -78,4 +101,4 @@ const pin = {
 
 pin.createMainPin();
 
-export {pin}
+export {pin, extraMarker}

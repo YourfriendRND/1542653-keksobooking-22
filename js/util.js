@@ -21,7 +21,7 @@ const getRandomElementOfArray = function (array) {
 
 const getRandomArray = function (array) {
   const randomArray = [];
-  const k = getRandomValue(1, array.length);
+  //const k = getRandomValue(1, array.length);
   for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
     let tempValue = array[j];
@@ -29,14 +29,13 @@ const getRandomArray = function (array) {
     array[i] = tempValue;
   }
 
-  for (let i = 0; i < k; i++) {
+  for (let i = 0; i < array.length; i++) {
     randomArray[i] = array[i];
   }
-
   return randomArray;
 }
 
-const showDownloadError   = function() {
+const showDownloadError = function() {
   const mistakeBlock = document.createElement('div');
   const closeButton = document.createElement('span');
   mistakeBlock.style.width = '100%';
