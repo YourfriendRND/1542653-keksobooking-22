@@ -3,6 +3,7 @@ import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SI
 import {addAnnouncementOnPage} from './create-ad.js';
 import {getData} from './api.js';
 import {showDownloadError, getRandomArray} from './util.js';
+import {resetForm, sendForm} from './form.js';
 import {changeHousingType} from './filter.js';
 /* global L:readonly */
 
@@ -55,6 +56,8 @@ const createAdOnMap = function(array) {
   extraMarker.createMarkers(slicedArray)
   extraMarker.paintMarkers()
   changeHousingType(slicedArray);
+  sendForm(slicedArray);
+  resetForm(slicedArray);
 }
 
 pageCondition.setPageNonActive();

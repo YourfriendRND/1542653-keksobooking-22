@@ -1,8 +1,12 @@
-import {TYPES_OF_APARTMENT, MIN_PRICES, TOKYO_CENTER_COORDINATES, SELECT_OF_TWO_ROOMS_ON_PAGE, SELECT_OF_THREE_ROOMS_ON_PAGE, SELECT_OF_MAX_ROOMS_ON_PAGE, SERVER_URL_FOR_POST} from './const.js';
+import {TYPES_OF_APARTMENT, MIN_PRICES, TOKYO_CENTER_COORDINATES, 
+  SELECT_OF_TWO_ROOMS_ON_PAGE, SELECT_OF_THREE_ROOMS_ON_PAGE, SELECT_OF_MAX_ROOMS_ON_PAGE, 
+  SERVER_URL_FOR_POST, DEFAULT_PARAMETERS} from './const.js';
 import {sendData} from './api.js';
-import {pin} from './create-map.js'
+import {pin, extraMarker} from './create-map.js';
+import {formFilter} from './filter.js';
 
-const options = TYPES_OF_APARTMENT.reverse();
+const copyOfApartmentTypes = TYPES_OF_APARTMENT.slice();
+const options = copyOfApartmentTypes.reverse();
 const fieldSelectionOfHousing = document.querySelector('#type');
 const fieldTimeIn = document.querySelector('#timein');
 const fieldTimeOut = document.querySelector('#timeout');
@@ -105,14 +109,30 @@ const error = function() {
   mainContent.append(errorBlock);
 }
 
-form.addEventListener('submit', function(evt) {
-  evt.preventDefault();
-  const formData = new FormData(evt.target)
-  sendData(SERVER_URL_FOR_POST, showSuccessMessage, error, formData)
-})
+const sendForm = function(array) {
+  form.addEventListener('submit', function(evt) {
+    evt.preventDefault();
+    const formData = new FormData(evt.target)
+    sendData(SERVER_URL_FOR_POST, showSuccessMessage, error, formData)
+    fieldPrice.placeholder = DEFAULT_PARAMETERS.placeholderPrice;
+    formFilter.reset();
+    extraMarker.deleteMarkers();
+    extraMarker.createMarkers(array);
+    extraMarker.paintMarkers()
+  })
+}
 
-resetButton.addEventListener('click', function(evt) {
-  evt.preventDefault();
-  form.reset();
-  pin.refreshMainPin();
-})
+const resetForm = function(array) {
+  resetButton.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    form.reset();
+    fieldPrice.placeholder = DEFAULT_PARAMETERS.placeholderPrice;
+    formFilter.reset();
+    pin.refreshMainPin();
+    extraMarker.deleteMarkers();
+    extraMarker.createMarkers(array);
+    extraMarker.paintMarkers()
+  })
+}
+
+export {resetForm, sendForm}
