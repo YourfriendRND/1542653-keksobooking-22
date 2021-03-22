@@ -1,8 +1,11 @@
+import {DEFAULT_PARAMETERS} from './const.js';
+
 const pageCondition = {
   mainForm: document.querySelector('.ad-form'),
   formElements: document.querySelectorAll('.ad-form__element'),
   filterField: document.querySelector('.map__filters'),
   filterElements: document.querySelector('.map__filters').querySelectorAll('select'),
+  pricePlaceholder: document.querySelector('#price'),
   setPageNonActive: function() {
     this.filterField.classList.add('map__filters--disabled');
     this.filterField.querySelector('#housing-features').setAttribute('disabled', true);
@@ -26,6 +29,7 @@ const pageCondition = {
     this.formElements.forEach(function(element) {
       element.removeAttribute('disabled');
     })
+    this.pricePlaceholder.placeholder = DEFAULT_PARAMETERS.placeholderPrice;
   },
 }
 
