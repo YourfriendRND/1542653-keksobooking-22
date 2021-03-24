@@ -4,7 +4,7 @@ import {addAnnouncementOnPage} from './create-ad.js';
 import {getData} from './api.js';
 import {showDownloadError, getRandomArray} from './util.js';
 import {resetForm, sendForm} from './form.js';
-import {changeHousingType} from './filter.js';
+import {changeFilter} from './filter.js';
 /* global L:readonly */
 
 const leafletMap = L.map('map-canvas');
@@ -55,7 +55,7 @@ const createAdOnMap = function(array) {
   const slicedArray = shuffledArray.slice(0, QUANTITY_OF_RANDOM_ANNOUNCEMENT);
   extraMarker.createMarkers(slicedArray)
   extraMarker.paintMarkers()
-  changeHousingType(slicedArray);
+  changeFilter(slicedArray);
   sendForm(slicedArray);
   resetForm(slicedArray);
 }
