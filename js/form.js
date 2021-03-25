@@ -1,12 +1,12 @@
 import {TYPES_OF_APARTMENT, MIN_PRICES, TOKYO_CENTER_COORDINATES, 
   SELECT_OF_TWO_ROOMS_ON_PAGE, SELECT_OF_THREE_ROOMS_ON_PAGE, SELECT_OF_MAX_ROOMS_ON_PAGE, 
-  SERVER_URL_FOR_POST, DEFAULT_PARAMETERS} from './const.js';
+  SERVER_URL_FOR_POST, DEFAULT_PARAMETERS, ESCAPE_KEY, ESC_KEY} from './const.js';
 import {sendData} from './api.js';
 import {pin, extraMarker} from './create-map.js';
 import {formFilter} from './filter.js';
 
 const copyOfApartmentTypes = TYPES_OF_APARTMENT.slice();
-const options = copyOfApartmentTypes.reverse();
+const reversedOfApartmentTypes= copyOfApartmentTypes.reverse();
 const fieldSelectionOfHousing = document.querySelector('#type');
 const fieldTimeIn = document.querySelector('#timein');
 const fieldTimeOut = document.querySelector('#timeout');
@@ -33,8 +33,8 @@ defaultAddress.setAttribute('readonly', true);
 defaultAddress.value = TOKYO_CENTER_COORDINATES.lat + ', ' + TOKYO_CENTER_COORDINATES.lng;
 
 fieldSelectionOfHousing.addEventListener('change', function() {
-  for (let i = 0; i < options.length; i++) {
-    if (this.value === options[i]) {
+  for (let i = 0; i < reversedOfApartmentTypes.length; i++) {
+    if (this.value === reversedOfApartmentTypes[i]) {
       fieldPrice.setAttribute('min', MIN_PRICES[i]);
       fieldPrice.placeholder = MIN_PRICES[i];
     }
@@ -42,8 +42,8 @@ fieldSelectionOfHousing.addEventListener('change', function() {
 })
 
 fieldPrice.addEventListener('input', function() {
-  for (let i = 0; i < options.length; i++) {
-    if (fieldSelectionOfHousing.value == options[i] && fieldPrice < MIN_PRICES[i]) {
+  for (let i = 0; i < reversedOfApartmentTypes.length; i++) {
+    if (fieldSelectionOfHousing.value === reversedOfApartmentTypes[i] && fieldPrice < MIN_PRICES[i]) {
       this.setCustomValidity('Пожалуйста, введите цену не менее ' + MIN_PRICES[i]);
     }
   }
@@ -90,7 +90,7 @@ const showSuccessMessage = function() {
 }
 
 document.addEventListener('keydown', function(evt) {
-  if(evt.key === ('Escape' || 'Esc') && mainContent.contains(successBlock) || mainContent.contains(errorBlock)) {
+  if(evt.key === (ESCAPE_KEY || ESC_KEY) && mainContent.contains(successBlock) || mainContent.contains(errorBlock)) {
     evt.preventDefault();
     successBlock.remove();
     errorBlock.remove()

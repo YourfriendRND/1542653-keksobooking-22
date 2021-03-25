@@ -1,4 +1,4 @@
-import {TYPES_OF_APARTMENT, USED_ON_PAGE_TYPES_OF_APARTMENT} from './const.js';
+import {TYPES_OF_APARTMENT, USED_ON_PAGE_TYPES_OF_APARTMENT, MIN_NUMBER_ROOMS, MIDDLE_NUMBER_ROOMS} from './const.js';
 
 const similarAnnouncementTemplate = document.querySelector('#card').content.querySelector('.popup');
 
@@ -36,10 +36,10 @@ const addTypeOfHousingOnPage = function(selector, arrayOfTypes) {
 }
 
 const getCorrectRoomWord = function (quantityOfRooms) {
-  if (quantityOfRooms === 1) {
+  if (quantityOfRooms === MIN_NUMBER_ROOMS) {
     return ' комната для ';
   }
-  if (quantityOfRooms >= 5) {
+  if (quantityOfRooms >= MIDDLE_NUMBER_ROOMS) {
     return ' комнат для ';
   }
   return ' комнаты для ';
@@ -102,15 +102,15 @@ const addAnnouncementOnPage = function (announcement) {
   const photoOfHousing = similarAnnouncement.querySelector('.popup__photo');
 
   addAvatarOnPage(avatarOfUser, announcement.author.avatar);
-  addTextContentOnPage(titleOfAnnouncement,  announcement.offer.title);
-  addTextContentOnPage(addressOfHousing,  announcement.offer.address);
-  addPriceOnPage(priceOfHousing,  announcement.offer.price);
-  addTypeOfHousingOnPage(typeOfHousing,  announcement.offer.type);
-  addQuantityOfGuests(capacityOfHousing,  announcement.offer.rooms,  announcement.offer.guests);
-  addTimeOnPage(time,  announcement.offer.checkin,  announcement.offer.checkout);
-  addFeaturesInAnnouncement(featuresList,  announcement.offer.features);
-  addTextContentOnPage(descriptionText,  announcement.offer.description);
-  addPhotosOfHousing(photoOfHousing,  announcement.offer.photos);
+  addTextContentOnPage(titleOfAnnouncement, announcement.offer.title);
+  addTextContentOnPage(addressOfHousing, announcement.offer.address);
+  addPriceOnPage(priceOfHousing, announcement.offer.price);
+  addTypeOfHousingOnPage(typeOfHousing, announcement.offer.type);
+  addQuantityOfGuests(capacityOfHousing, announcement.offer.rooms, announcement.offer.guests);
+  addTimeOnPage(time, announcement.offer.checkin, announcement.offer.checkout);
+  addFeaturesInAnnouncement(featuresList, announcement.offer.features);
+  addTextContentOnPage(descriptionText, announcement.offer.description);
+  addPhotosOfHousing(photoOfHousing, announcement.offer.photos);
   return similarAnnouncement;
 }
 

@@ -1,5 +1,6 @@
-import {extraMarker} from './create-map.js';
 import {DEFAULT_PARAMETERS, DEFAULT_PRICE_FOR_HOUSING, RENDERING_DELAY} from './const.js';
+import {extraMarker} from './create-map.js';
+/* global _:readonly */
 
 const formFilter = document.querySelector('.map__filters');
 const selectOfHousingType = formFilter.querySelector('#housing-type');
@@ -29,15 +30,11 @@ const filterByPriceType = function(object) {
 }
 
 const filterByRoomNumber = function (object) {
-  if (selectOfRoomNumber.value == object.offer.rooms || selectOfRoomNumber.value === DEFAULT_PARAMETERS.filterSelect) {
-    return true;
-  }
+  return (selectOfRoomNumber.value === object.offer.rooms.toString() || selectOfRoomNumber.value === DEFAULT_PARAMETERS.filterSelect) 
 }
 
 const filterByGuestNumber = function (object) {
-  if (selectOfGuestNumber.value == object.offer.guests || selectOfGuestNumber.value === DEFAULT_PARAMETERS.filterSelect) {
-    return true;
-  }
+  return (selectOfGuestNumber.value === object.offer.guests.toString() || selectOfGuestNumber.value === DEFAULT_PARAMETERS.filterSelect) 
 }
 
 const filterByHousingFeature = function (object) {
@@ -67,17 +64,7 @@ const filterAds = function(array) {
   extraMarker.paintMarkers()
 }
 
-const debounce = function(cb, time) {
-  let timeout; 
-  return function (argument) {
-    clearTimeout(timeout); 
-    timeout = setTimeout(function() {
-      cb(argument)}, time,
-    )
-  }
-}
-
-const makeDebounce = debounce(function(array) {
+const makeDebounce = _.debounce(function(array) {
   filterAds(array)
 }, RENDERING_DELAY)
 

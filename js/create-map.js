@@ -1,11 +1,14 @@
+import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SIZES_OF_PIN, 
+  SIZES_OF_PIN_CENTER, SERVER_URL_FOR_GET, QUANTITY_OF_RANDOM_ANNOUNCEMENT, MAP_SCALE, NUMBER_OF_COORDINATE_POINTS} from './const.js';
 import {pageCondition} from './page-condition.js';
-import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SIZES_OF_PIN, SIZES_OF_PIN_CENTER, SERVER_URL_FOR_GET, QUANTITY_OF_RANDOM_ANNOUNCEMENT} from './const.js';
 import {addAnnouncementOnPage} from './create-ad.js';
 import {getData} from './api.js';
 import {showDownloadError, getRandomArray} from './util.js';
 import {resetForm, sendForm} from './form.js';
 import {changeFilter} from './filter.js';
 /* global L:readonly */
+
+pageCondition.setPageNonActive();
 
 const leafletMap = L.map('map-canvas');
 
@@ -54,22 +57,19 @@ const createAdOnMap = function(array) {
   const shuffledArray = getRandomArray(array);
   const slicedArray = shuffledArray.slice(0, QUANTITY_OF_RANDOM_ANNOUNCEMENT);
   extraMarker.createMarkers(slicedArray)
-  extraMarker.paintMarkers()
+  extraMarker.paintMarkers();
   changeFilter(slicedArray);
   sendForm(slicedArray);
   resetForm(slicedArray);
 }
 
-pageCondition.setPageNonActive();
-
-getData(SERVER_URL_FOR_GET, createAdOnMap, showDownloadError)
-
 
 leafletMap.on('load', function() {
-  pageCondition.setPageActive();
+  getData(SERVER_URL_FOR_GET, createAdOnMap, showDownloadError)
+  pageCondition.setPageActive();  
 })
 
-leafletMap.setView(TOKYO_CENTER_COORDINATES, 10);
+leafletMap.setView(TOKYO_CENTER_COORDINATES, MAP_SCALE);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(leafletMap);
@@ -91,8 +91,8 @@ const pin = {
     this.mainPin.addTo(leafletMap);
     this.mainPin.on('move', function(evt) {
       const coordinateOfMovement = evt.target.getLatLng();
-      const newLatitude = coordinateOfMovement.lat.toFixed(5);
-      const newLongitude = coordinateOfMovement.lng.toFixed(5);
+      const newLatitude = coordinateOfMovement.lat.toFixed(NUMBER_OF_COORDINATE_POINTS);
+      const newLongitude = coordinateOfMovement.lng.toFixed(NUMBER_OF_COORDINATE_POINTS);
       const addressOfNewAnnouncement = document.querySelector('#address');
       addressOfNewAnnouncement.value = newLatitude + ', ' + newLongitude;
     })

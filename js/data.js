@@ -1,6 +1,6 @@
-import {getRandomValue, getRandomCoordinate, getRandomElementOfArray, getRandomArray} from './util.js';
 import {TYPES_OF_APARTMENT, CHECKOUT_TIMES, FACILITIES, SOURCES_OF_PHOTOS, QUANTITY_OF_RANDOM_ANNOUNCEMENT, FIRST_VALUE_OF_LATITUDE, SECOND_VALUE_OF_LATITUDE,
-  FIRST_VALUE_OF_LONGITUDE, SECOND_VALUE_OF_LONGITUDE, NUMBER_OF_COORDINATE_POINTS, MIN_RANDOM_PRICE, MAX_RANDOM_PRICE, MAX_GUESTS_NUMBER, MAX_ROOMS_NUMBERS, MAX_NUMBER_FOR_AVATAR} from './const.js';
+  FIRST_VALUE_OF_LONGITUDE, SECOND_VALUE_OF_LONGITUDE, NUMBER_OF_COORDINATE_POINTS, MIN_RANDOM_PRICE, MAX_RANDOM_PRICE, MAX_GUESTS_NUMBER, MAX_NUMBER_ROOMS, MAX_NUMBER_FOR_AVATAR} from './const.js';
+import {getRandomValue, getRandomCoordinate, getRandomElementOfArray, getRandomArray} from './util.js';
 
 // create Announcements
 const createListRandomAnnouncement = function () {
@@ -15,7 +15,7 @@ const createListRandomAnnouncement = function () {
       address: coordinateX + ', ' + coordinateY,
       price: getRandomValue(MIN_RANDOM_PRICE, MAX_RANDOM_PRICE),
       type: getRandomElementOfArray(TYPES_OF_APARTMENT),
-      rooms: getRandomValue(1, MAX_ROOMS_NUMBERS),
+      rooms: getRandomValue(1, MAX_NUMBER_ROOMS),
       guests: getRandomValue(1, MAX_GUESTS_NUMBER),
       checkin: getRandomElementOfArray(CHECKOUT_TIMES),
       checkout: getRandomElementOfArray(CHECKOUT_TIMES),
