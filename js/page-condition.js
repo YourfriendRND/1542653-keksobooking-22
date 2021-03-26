@@ -1,4 +1,4 @@
-import {DEFAULT_PARAMETERS} from './const.js';
+import {DefaultParameters} from './const.js';
 
 const pageCondition = {
   mainForm: document.querySelector('.ad-form'),
@@ -29,7 +29,7 @@ const pageCondition = {
     this.formElements.forEach(function(element) {
       element.removeAttribute('disabled');
     })
-    this.pricePlaceholder.placeholder = DEFAULT_PARAMETERS.placeholderPrice;
+    this.pricePlaceholder.placeholder = DefaultParameters.PLACEHOLDER_PRICE;
   },
 }
 

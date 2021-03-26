@@ -1,15 +1,6 @@
 import {TYPES_OF_APARTMENT, USED_ON_PAGE_TYPES_OF_APARTMENT, MIN_NUMBER_ROOMS, MIDDLE_NUMBER_ROOMS} from './const.js';
 
 const similarAnnouncementTemplate = document.querySelector('#card').content.querySelector('.popup');
-const cleanedFeaturesList = similarAnnouncementTemplate.querySelector('.popup__features');
-const getCleanList = function(parentSelector) {
-  for (let i = parentSelector.children.length - 1; i >=0; i--) {
-    let item = parentSelector.children[i];
-    item.parentElement.removeChild(item);
-  }
-  return parentSelector
-}
-getCleanList(cleanedFeaturesList);
 
 const addAvatarOnPage = function (selector, avatar) {
   if (!avatar) {
@@ -72,6 +63,7 @@ const addFeaturesInAnnouncement = function (parentSelector, arrayOfFeatures) {
   if (!arrayOfFeatures.length) {
     parentSelector.classList.add('hidden');
   }
+  parentSelector.innerHTML = '';
   const fragmentOfList = document.createDocumentFragment()
   for (let j = 0; j < arrayOfFeatures.length; j++) {
     let newListElement = document.createElement('li');
