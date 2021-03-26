@@ -1,6 +1,15 @@
 import {TYPES_OF_APARTMENT, USED_ON_PAGE_TYPES_OF_APARTMENT, MIN_NUMBER_ROOMS, MIDDLE_NUMBER_ROOMS} from './const.js';
 
 const similarAnnouncementTemplate = document.querySelector('#card').content.querySelector('.popup');
+const cleanedFeaturesList = similarAnnouncementTemplate.querySelector('.popup__features');
+const getCleanList = function(parentSelector) {
+  for (let i = parentSelector.children.length - 1; i >=0; i--) {
+    let item = parentSelector.children[i];
+    item.parentElement.removeChild(item);
+  }
+  return parentSelector
+}
+getCleanList(cleanedFeaturesList);
 
 const addAvatarOnPage = function (selector, avatar) {
   if (!avatar) {
@@ -63,28 +72,28 @@ const addFeaturesInAnnouncement = function (parentSelector, arrayOfFeatures) {
   if (!arrayOfFeatures.length) {
     parentSelector.classList.add('hidden');
   }
-  for (let i = parentSelector.children.length - 1; i >=0; i--) {
-    let item = parentSelector.children[i];
-    item.parentElement.removeChild(item);
-  }
+  const fragmentOfList = document.createDocumentFragment()
   for (let j = 0; j < arrayOfFeatures.length; j++) {
     let newListElement = document.createElement('li');
     newListElement.className = 'popup__feature popup__feature--' + arrayOfFeatures[j];
-    parentSelector.appendChild(newListElement);
+    fragmentOfList.appendChild(newListElement);
   }
+  parentSelector.appendChild(fragmentOfList);
 }
 
 const addPhotosOfHousing = function(selector, arrayOfPhotos) {
   if (!arrayOfPhotos.length) {
     selector.classList.add('hidden');
   }
-  let copySelector = selector.cloneNode(true);
+  const fragmentForPhotos = document.createDocumentFragment(); 
+  const copySelector = selector.cloneNode(true);
   selector.src = arrayOfPhotos[0];
   if (arrayOfPhotos.length > 1) {
     for (let i = 1; i < arrayOfPhotos.length; i++) {
       copySelector.src = arrayOfPhotos[i];
-      selector.parentElement.appendChild(copySelector);
+      fragmentForPhotos.appendChild(copySelector)
     }
+    selector.parentElement.appendChild(fragmentForPhotos);
   }
 }
 
@@ -97,10 +106,9 @@ const addAnnouncementOnPage = function (announcement) {
   const typeOfHousing = similarAnnouncement.querySelector('.popup__type');
   const capacityOfHousing = similarAnnouncement.querySelector('.popup__text--capacity');
   const time = similarAnnouncement.querySelector('.popup__text--time');
-  const featuresList = similarAnnouncement.querySelector('.popup__features');
+  const featureList = similarAnnouncement.querySelector('.popup__features')
   const descriptionText = similarAnnouncement.querySelector('.popup__description')
   const photoOfHousing = similarAnnouncement.querySelector('.popup__photo');
-
   addAvatarOnPage(avatarOfUser, announcement.author.avatar);
   addTextContentOnPage(titleOfAnnouncement, announcement.offer.title);
   addTextContentOnPage(addressOfHousing, announcement.offer.address);
@@ -108,7 +116,7 @@ const addAnnouncementOnPage = function (announcement) {
   addTypeOfHousingOnPage(typeOfHousing, announcement.offer.type);
   addQuantityOfGuests(capacityOfHousing, announcement.offer.rooms, announcement.offer.guests);
   addTimeOnPage(time, announcement.offer.checkin, announcement.offer.checkout);
-  addFeaturesInAnnouncement(featuresList, announcement.offer.features);
+  addFeaturesInAnnouncement(featureList, announcement.offer.features);
   addTextContentOnPage(descriptionText, announcement.offer.description);
   addPhotosOfHousing(photoOfHousing, announcement.offer.photos);
   return similarAnnouncement;

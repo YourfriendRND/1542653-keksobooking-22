@@ -89,21 +89,27 @@ const showSuccessMessage = function() {
   pin.refreshMainPin();
 }
 
-document.addEventListener('keydown', function(evt) {
+
+const onEscPress = function(evt) {
   if(evt.key === (ESCAPE_KEY || ESC_KEY) && mainContent.contains(successBlock) || mainContent.contains(errorBlock)) {
     evt.preventDefault();
     successBlock.remove();
-    errorBlock.remove()
+    errorBlock.remove();
+    document.removeEventListener('keydown', onEscPress)
   }
-})
+}
 
-document.addEventListener('click', function(evt) {
+const onClick = function (evt) {
   if(mainContent.contains(successBlock) || mainContent.contains(errorBlock)) {
     evt.preventDefault();
     successBlock.remove();
-    errorBlock.remove()
+    errorBlock.remove();
+    document.removeEventListener('click', onClick);
   }
-})
+}
+
+document.addEventListener('keydown', onEscPress);
+document.addEventListener('click', onClick);
 
 const error = function() {
   mainContent.append(errorBlock);
@@ -112,8 +118,9 @@ const error = function() {
 const sendForm = function(array) {
   form.addEventListener('submit', function(evt) {
     evt.preventDefault();
-    const formData = new FormData(evt.target)
-    sendData(SERVER_URL_FOR_POST, showSuccessMessage, error, formData)
+    const formData = new FormData(evt.target);
+    sendData(SERVER_URL_FOR_POST, showSuccessMessage, error, formData);
+    fieldPrice.setAttribute('min', DEFAULT_PARAMETERS.defaultMinFlatPrice);
     fieldPrice.placeholder = DEFAULT_PARAMETERS.placeholderPrice;
     formFilter.reset();
     extraMarker.deleteMarkers();
@@ -126,6 +133,7 @@ const resetForm = function(array) {
   resetButton.addEventListener('click', function(evt) {
     evt.preventDefault();
     form.reset();
+    fieldPrice.setAttribute('min', DEFAULT_PARAMETERS.defaultMinFlatPrice);
     fieldPrice.placeholder = DEFAULT_PARAMETERS.placeholderPrice;
     formFilter.reset();
     pin.refreshMainPin();
