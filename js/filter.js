@@ -1,4 +1,4 @@
-import {DEFAULT_PARAMETERS, DEFAULT_PRICE_FOR_HOUSING, RENDERING_DELAY} from './const.js';
+import {DefaultParameters, DefaultPriceForHousing, RENDERING_DELAY} from './const.js';
 import {extraMarker} from './create-map.js';
 /* global _:readonly */
 
@@ -11,30 +11,30 @@ const selectOfGuestNumber = formFilter.querySelector('#housing-guests');
 const selectOfHousingFeature = formFilter.querySelector('.map__features');
 
 const filterByHousingType = function(object) {
-  return (selectOfHousingType.value === object.offer.type || selectOfHousingType.value === DEFAULT_PARAMETERS.filterSelect)
+  return (selectOfHousingType.value === object.offer.type || selectOfHousingType.value === DefaultParameters.FILTER_SELECT)
 }
 
 const filterByPriceType = function(object) {
-  if (selectOfPriceType.value === optionsOfPriceType[3].value && object.offer.price > DEFAULT_PRICE_FOR_HOUSING.high) {
+  if (selectOfPriceType.value === optionsOfPriceType[3].value && object.offer.price > DefaultPriceForHousing.HIGH) {
     return true;
   }
-  else if (selectOfPriceType.value === optionsOfPriceType[2].value && object.offer.price < DEFAULT_PRICE_FOR_HOUSING.low) {
+  else if (selectOfPriceType.value === optionsOfPriceType[2].value && object.offer.price < DefaultPriceForHousing.LOW) {
     return true;
   }
-  else if (selectOfPriceType.value === optionsOfPriceType[1].value && object.offer.price >= DEFAULT_PRICE_FOR_HOUSING.low && object.offer.price <= DEFAULT_PRICE_FOR_HOUSING.high) {
+  else if (selectOfPriceType.value === optionsOfPriceType[1].value && object.offer.price >= DefaultPriceForHousing.LOW && object.offer.price <= DefaultPriceForHousing.HIGH) {
     return true;
   }
-  else if (selectOfPriceType.value === DEFAULT_PARAMETERS.filterSelect) {
+  else if (selectOfPriceType.value === DefaultParameters.FILTER_SELECT) {
     return true;
   }
 }
 
 const filterByRoomNumber = function (object) {
-  return (selectOfRoomNumber.value === object.offer.rooms.toString() || selectOfRoomNumber.value === DEFAULT_PARAMETERS.filterSelect) 
+  return (selectOfRoomNumber.value === object.offer.rooms.toString() || selectOfRoomNumber.value === DefaultParameters.FILTER_SELECT) 
 }
 
 const filterByGuestNumber = function (object) {
-  return (selectOfGuestNumber.value === object.offer.guests.toString() || selectOfGuestNumber.value === DEFAULT_PARAMETERS.filterSelect) 
+  return (selectOfGuestNumber.value === object.offer.guests.toString() || selectOfGuestNumber.value === DefaultParameters.FILTER_SELECT) 
 }
 
 const filterByHousingFeature = function (object) {

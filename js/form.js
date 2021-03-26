@@ -1,6 +1,6 @@
 import {TYPES_OF_APARTMENT, MIN_PRICES, TOKYO_CENTER_COORDINATES, 
   SELECT_OF_TWO_ROOMS_ON_PAGE, SELECT_OF_THREE_ROOMS_ON_PAGE, SELECT_OF_MAX_ROOMS_ON_PAGE, 
-  SERVER_URL_FOR_POST, DEFAULT_PARAMETERS, ESCAPE_KEY, ESC_KEY} from './const.js';
+  SERVER_URL_FOR_POST, DefaultParameters, ESCAPE_KEY, ESC_KEY} from './const.js';
 import {sendData} from './api.js';
 import {pin, extraMarker} from './create-map.js';
 import {formFilter} from './filter.js';
@@ -83,19 +83,13 @@ fieldRoomsNumber.addEventListener('change', function() {
   }
 })
 
-const showSuccessMessage = function() {
-  mainContent.append(successBlock);
-  form.reset();
-  pin.refreshMainPin();
-}
-
-
 const onEscPress = function(evt) {
   if(evt.key === (ESCAPE_KEY || ESC_KEY) && mainContent.contains(successBlock) || mainContent.contains(errorBlock)) {
     evt.preventDefault();
     successBlock.remove();
     errorBlock.remove();
-    document.removeEventListener('keydown', onEscPress)
+    document.removeEventListener('click', onClick);
+    document.removeEventListener('keydown', onEscPress);
   }
 }
 
@@ -105,14 +99,22 @@ const onClick = function (evt) {
     successBlock.remove();
     errorBlock.remove();
     document.removeEventListener('click', onClick);
+    document.removeEventListener('keydown', onEscPress);
   }
 }
 
-document.addEventListener('keydown', onEscPress);
-document.addEventListener('click', onClick);
+const showSuccessMessage = function() {
+  mainContent.append(successBlock);
+  form.reset();
+  pin.refreshMainPin();
+  document.addEventListener('click', onClick);
+  document.addEventListener('keydown', onEscPress);
+}
 
 const error = function() {
   mainContent.append(errorBlock);
+  document.addEventListener('click', onClick);
+  document.addEventListener('keydown', onEscPress);
 }
 
 const sendForm = function(array) {
@@ -120,8 +122,8 @@ const sendForm = function(array) {
     evt.preventDefault();
     const formData = new FormData(evt.target);
     sendData(SERVER_URL_FOR_POST, showSuccessMessage, error, formData);
-    fieldPrice.setAttribute('min', DEFAULT_PARAMETERS.defaultMinFlatPrice);
-    fieldPrice.placeholder = DEFAULT_PARAMETERS.placeholderPrice;
+    fieldPrice.setAttribute('min', DefaultParameters.DEFAULT_MIN_FLAT_PRICE);
+    fieldPrice.placeholder = DefaultParameters.PLACEHOLDER_PRICE;
     formFilter.reset();
     extraMarker.deleteMarkers();
     extraMarker.createMarkers(array);
@@ -133,8 +135,8 @@ const resetForm = function(array) {
   resetButton.addEventListener('click', function(evt) {
     evt.preventDefault();
     form.reset();
-    fieldPrice.setAttribute('min', DEFAULT_PARAMETERS.defaultMinFlatPrice);
-    fieldPrice.placeholder = DEFAULT_PARAMETERS.placeholderPrice;
+    fieldPrice.setAttribute('min', DefaultParameters.DEFAULT_MIN_FLAT_PRICE);
+    fieldPrice.placeholder = DefaultParameters.PLACEHOLDER_PRICE;
     formFilter.reset();
     pin.refreshMainPin();
     extraMarker.deleteMarkers();
