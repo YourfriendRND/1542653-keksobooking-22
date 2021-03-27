@@ -23,7 +23,7 @@ const mainContent = document.querySelector('main');
 const resetButton = document.querySelector('.ad-form__reset');
 
 fieldTitle.addEventListener('input', function() {
-  const message = (this.value.search(/\d/) != -1) ? ('Поле заполнено некорректно, удалите цифры из поля ввода') : ('');
+  const message = (this.value.search(/\d/) !== -1) ? ('Поле заполнено некорректно, удалите цифры из поля ввода') : ('');
   this.setCustomValidity(message);
   this.reportValidity();
 })
