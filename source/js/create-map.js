@@ -1,9 +1,9 @@
-import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SIZES_OF_PIN, 
+import {TOKYO_CENTER_COORDINATES, PICTURE_OF_MAIN_PIN, PICTURE_OF_EXTRA_PINS, SIZES_OF_PIN,
   SIZES_OF_PIN_CENTER, SERVER_URL_FOR_GET, QUANTITY_OF_RANDOM_ANNOUNCEMENT, MAP_SCALE, NUMBER_OF_COORDINATE_POINTS} from './const.js';
 import {pageCondition} from './page-condition.js';
 import {addAnnouncementOnPage} from './create-ad.js';
 import {getData} from './api.js';
-import {showDownloadError, getRandomArray} from './util.js';
+import {showDownloadError} from './util.js';
 import {resetForm, sendForm} from './form.js';
 import {changeFilter} from './filter.js';
 /* global L:readonly */
@@ -54,11 +54,10 @@ const extraMarker = {
 }
 
 const createAdOnMap = function(array) {
-  const shuffledArray = getRandomArray(array);
-  const slicedArray = shuffledArray.slice(0, QUANTITY_OF_RANDOM_ANNOUNCEMENT);
+  const slicedArray = array.slice(0, QUANTITY_OF_RANDOM_ANNOUNCEMENT);
   extraMarker.createMarkers(slicedArray)
   extraMarker.paintMarkers();
-  changeFilter(slicedArray);
+  changeFilter(array);
   sendForm(slicedArray);
   resetForm(slicedArray);
 }
@@ -66,7 +65,7 @@ const createAdOnMap = function(array) {
 
 leafletMap.on('load', function() {
   getData(SERVER_URL_FOR_GET, createAdOnMap, showDownloadError)
-  pageCondition.setPageActive();  
+  pageCondition.setPageActive();
 })
 
 leafletMap.setView(TOKYO_CENTER_COORDINATES, MAP_SCALE);

@@ -1,3 +1,4 @@
+import {ERROR_MESSAGE_TIME} from './const.js';
 const getRandomArray = function (array) {
   const randomArray = [];
   for (let i = array.length - 1; i > 0; i--) {
@@ -38,11 +39,26 @@ const showDownloadError = function() {
     if(document.body.contains(mistakeBlock)) {
       mistakeBlock.remove();
     }
-  }, 5000)
+  }, ERROR_MESSAGE_TIME)
 
   closeButton.addEventListener('click', function() {
     mistakeBlock.remove();
   })
 }
 
-export {getRandomArray, showDownloadError};
+const uploadImage = function(uploadField, previewSelector, arrayOfAllowedValues) {
+  const file = uploadField.files[0];
+  const fileName = file.name.toLowerCase();
+  const checkFileExtension = arrayOfAllowedValues.some(function(element) {
+    return fileName.endsWith(element);
+  })
+  if(checkFileExtension) {
+    const reader = new  FileReader();
+    reader.addEventListener('load', function() {
+      previewSelector.src = reader.result;
+    })
+    reader.readAsDataURL(file);
+  }
+}
+
+export {getRandomArray, showDownloadError, uploadImage};

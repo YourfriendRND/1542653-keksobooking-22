@@ -1,9 +1,10 @@
-import {TYPES_OF_APARTMENT, MIN_PRICES, TOKYO_CENTER_COORDINATES, 
-  SELECT_OF_TWO_ROOMS_ON_PAGE, SELECT_OF_THREE_ROOMS_ON_PAGE, SELECT_OF_MAX_ROOMS_ON_PAGE, 
-  SERVER_URL_FOR_POST, DefaultParameters, ESCAPE_KEY, ESC_KEY} from './const.js';
+import {TYPES_OF_APARTMENT, MIN_PRICES, TOKYO_CENTER_COORDINATES,
+  SELECT_OF_TWO_ROOMS_ON_PAGE, SELECT_OF_THREE_ROOMS_ON_PAGE, SELECT_OF_MAX_ROOMS_ON_PAGE,
+  SERVER_URL_FOR_POST, DefaultParameters, ESCAPE_KEY, ESC_KEY, ALLOWED_FILE_TYPES} from './const.js';
 import {sendData} from './api.js';
 import {pin, extraMarker} from './create-map.js';
 import {formFilter} from './filter.js';
+import {uploadImage} from './util.js';
 
 const copyOfApartmentTypes = TYPES_OF_APARTMENT.slice();
 const reversedOfApartmentTypes= copyOfApartmentTypes.reverse();
@@ -21,6 +22,10 @@ const successBlock = document.querySelector('#success').content.querySelector('.
 const errorBlock = document.querySelector('#error').content.querySelector('.error');
 const mainContent = document.querySelector('main');
 const resetButton = document.querySelector('.ad-form__reset');
+const avatarPreview = document.querySelector('.ad-form-header__preview img');
+const userAvatarField = document.querySelector('#avatar');
+const photoPreviewBlock = document.querySelector('.ad-form__photo');
+const photoUploadField = document.querySelector('#images');
 
 fieldTitle.addEventListener('input', function() {
   const message = (this.value.search(/\d/) !== -1) ? ('Поле заполнено некорректно, удалите цифры из поля ввода') : ('');
@@ -83,6 +88,16 @@ fieldRoomsNumber.addEventListener('change', function() {
   }
 })
 
+userAvatarField.addEventListener('change', function() {
+  uploadImage(userAvatarField, avatarPreview, ALLOWED_FILE_TYPES);
+})
+
+photoUploadField.addEventListener('change', function() {
+  const photoPreviewTag = document.createElement('img');
+  photoPreviewBlock.appendChild(photoPreviewTag);
+  uploadImage(photoUploadField, photoPreviewTag, ALLOWED_FILE_TYPES);
+})
+
 const onEscPress = function(evt) {
   if(evt.key === (ESCAPE_KEY || ESC_KEY) && mainContent.contains(successBlock) || mainContent.contains(errorBlock)) {
     evt.preventDefault();
@@ -105,6 +120,8 @@ const onClick = function (evt) {
 
 const showSuccessMessage = function() {
   mainContent.append(successBlock);
+  avatarPreview.src = DefaultParameters.DEFAULT_AVATAR_IMAGE;
+  photoPreviewBlock.innerHTML = '';
   form.reset();
   pin.refreshMainPin();
   document.addEventListener('click', onClick);
@@ -137,6 +154,8 @@ const resetForm = function(array) {
     form.reset();
     fieldPrice.setAttribute('min', DefaultParameters.DEFAULT_MIN_FLAT_PRICE);
     fieldPrice.placeholder = DefaultParameters.PLACEHOLDER_PRICE;
+    avatarPreview.src = DefaultParameters.DEFAULT_AVATAR_IMAGE;
+    photoPreviewBlock.innerHTML = '';
     formFilter.reset();
     pin.refreshMainPin();
     extraMarker.deleteMarkers();

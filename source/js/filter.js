@@ -1,6 +1,7 @@
-import {DefaultParameters, DefaultPriceForHousing, RENDERING_DELAY} from './const.js';
+import {DefaultParameters, DefaultPriceForHousing, RENDERING_DELAY, QUANTITY_OF_RANDOM_ANNOUNCEMENT} from './const.js';
 import {extraMarker} from './create-map.js';
-/* global _:readonly */
+import {getRandomArray} from './util.js';
+import _ from 'lodash';
 
 const formFilter = document.querySelector('.map__filters');
 const selectOfHousingType = formFilter.querySelector('#housing-type');
@@ -30,11 +31,11 @@ const filterByPriceType = function(object) {
 }
 
 const filterByRoomNumber = function (object) {
-  return (selectOfRoomNumber.value === object.offer.rooms.toString() || selectOfRoomNumber.value === DefaultParameters.FILTER_SELECT) 
+  return (selectOfRoomNumber.value === object.offer.rooms.toString() || selectOfRoomNumber.value === DefaultParameters.FILTER_SELECT)
 }
 
 const filterByGuestNumber = function (object) {
-  return (selectOfGuestNumber.value === object.offer.guests.toString() || selectOfGuestNumber.value === DefaultParameters.FILTER_SELECT) 
+  return (selectOfGuestNumber.value === object.offer.guests.toString() || selectOfGuestNumber.value === DefaultParameters.FILTER_SELECT)
 }
 
 const filterByHousingFeature = function (object) {
@@ -54,11 +55,12 @@ const filterByHousingFeature = function (object) {
 
 const filterAds = function(array) {
   let filtredArray = []
-  array.filter(function (element) {
-    if (filterByHousingType(element) && filterByPriceType(element) && filterByRoomNumber(element) && filterByGuestNumber(element) && filterByHousingFeature(element)) {
-      filtredArray.push(element);
+  const shuffledArray = getRandomArray(array);
+  for (let i = 0; i < shuffledArray.length; i++) {
+    if (filterByHousingType(shuffledArray[i]) && filterByPriceType(shuffledArray[i]) && filterByRoomNumber(shuffledArray[i]) && filterByGuestNumber(shuffledArray[i]) && filterByHousingFeature(shuffledArray[i]) && filtredArray.length <= QUANTITY_OF_RANDOM_ANNOUNCEMENT) {
+      filtredArray.push(shuffledArray[i]);
     }
-  })
+  }
   extraMarker.deleteMarkers();
   extraMarker.createMarkers(filtredArray);
   extraMarker.paintMarkers()
