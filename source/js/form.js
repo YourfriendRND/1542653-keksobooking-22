@@ -94,6 +94,8 @@ userAvatarField.addEventListener('change', function() {
 
 photoUploadField.addEventListener('change', function() {
   const photoPreviewTag = document.createElement('img');
+  photoPreviewTag.setAttribute('width', '70');
+  photoPreviewTag.setAttribute('width', '70');
   photoPreviewBlock.appendChild(photoPreviewTag);
   uploadImage(photoUploadField, photoPreviewTag, ALLOWED_FILE_TYPES);
 })
